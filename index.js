@@ -1,4 +1,4 @@
-// A user enters the website and finds a list of the names, dates, times, locations, and descriptions of all the parties that are happening
+// Part 1: A user enters the website and finds a list of the names, dates, times, locations, and descriptions of all the parties that are happening
 
 // Get party elements
 const partiesContainer = document.getElementById('parties-container');
