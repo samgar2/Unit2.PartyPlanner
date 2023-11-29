@@ -32,14 +32,32 @@ const renderAllParties = (partyList) => {
         console.log(party);
         const partyElement = document.createElement('div');
         partyElement.classList.add('party-card');
+
         partyElement.innerHTML = `
-            <h4>${party.name}</h4>
-            <h4>${party.date}</h4>
-            <h4>${party.location}</h4>
-            <p>${party.description}</p>
+            <h4>Name: ${party.name}</h4>
+            <p>${getdateTime(party.date)}</p>
+            <p>Location: ${party.location}</p>
+            <p>Description: ${party.description}</p>
         `;
+
         partiesContainer.appendChild(partyElement);
     });
+}
+
+// Separate out the date and time
+function getdateTime (dateTimeString) {
+    let date = ''
+    let time = ''
+
+    for (let i = 0; i < 10; i++) {
+        date += dateTimeString[i]
+    }
+
+    for (let i = 11; i < 19; i++) {
+        time += dateTimeString[i]
+    }
+
+    return `Date: ${date} Time: ${time}`
 }
 
 const init = async () => {
