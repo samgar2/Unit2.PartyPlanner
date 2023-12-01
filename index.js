@@ -49,6 +49,14 @@ function renderParties() {
             <p>Location: ${party.location}</p>
             <p>Description: ${party.description}</p>
       `;
+
+        // Delete button
+        const deleteButton = document.createElement('button')
+        deleteButton.textContent = "Delete Party"
+        li.append(deleteButton)
+
+        deleteButton.addEventListener("click", () => deleteParty(party.id))
+
         return li;
     });
 
@@ -71,37 +79,47 @@ function getdateTime(dateTimeString) {
     return `Date: ${date} Time: ${time}`
 }
 
- // POST: Ask the API to create a new artist based on form data
+// POST: Ask the API to create a new party based on form data
 async function addParty(event) {
     event.preventDefault();
-  
+
     try {
-    let DateAndTime = `${event.target[1].value}T${event.target[2].value}Z`
+        let DateAndTime = `${event.target[1].value}T${event.target[2].value}Z` // Reunify date and time
 
-      const response = await fetch(API_URL, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: addPartyForm.name.value,
-          date: DateAndTime,
-          location: addPartyForm.location.value,
-          description: addPartyForm.description.value,
-        }),
-      });
-  
-      if (!response.ok) {
-        throw new Error("Failed to create party");
-      }
-  
-      render();
+        const response = await fetch(API_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                name: addPartyForm.name.value,
+                date: DateAndTime,
+                location: addPartyForm.location.value,
+                description: addPartyForm.description.value,
+            }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to create party");
+        }
+
+        render();
     } catch (error) {
-      console.error(error);
+        console.error(error);
     }
-  }
-
-  const init = async () => {
-    const parties = await getParties();
-    renderParties(parties);
 }
 
-init();
+// DELETE: Ask the API to delete the selected party
+async function deleteParty(id) {
+    try {
+        const response = await fetch(`${API_URL}/${id}`, {
+            method: "DELETE",
+        });
+
+        if (!response.ok) {
+            throw new Error("Failed to delete party");
+        }
+
+        render();
+    } catch (error) {
+        console.error(error);
+    }
+}
